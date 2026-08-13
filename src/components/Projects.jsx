@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 
 export default function Projects() {
+  const [activeFilter, setActiveFilter] = useState('ALL');
+
+  const CATEGORIES = ['ALL', 'SOFTWARE', 'ECE', 'EMBEDDED', 'AI / ML', 'DSP', 'DSA'];
+
   const PROJECTS_DATA = [
     {
       number: '01',
@@ -9,6 +13,7 @@ export default function Projects() {
       description:
         'A data-structures-and-algorithms-driven warehouse navigation system using graph-based pathfinding and real-time visual traversal.',
       technologies: ['Dijkstra', 'A*', 'Graphs', 'React', 'JavaScript', 'DSA'],
+      categories: ['SOFTWARE', 'DSA', 'ALL'],
       github: 'https://github.com/NebulaVoltage',
     },
     {
@@ -17,6 +22,7 @@ export default function Projects() {
       description:
         'A Java-based mission control system demonstrating linked lists, stack-based emergency handling, and mission-state management.',
       technologies: ['Java', 'Linked Lists', 'Stacks', 'DSA'],
+      categories: ['SOFTWARE', 'DSA', 'ALL'],
       github: 'https://github.com/NebulaVoltage',
     },
     {
@@ -25,6 +31,7 @@ export default function Projects() {
       description:
         'An interactive signal-processing project demonstrating sampling rates, reconstruction filtering, and Nyquist-Shannon aliasing behavior.',
       technologies: ['DSP', 'Sampling', 'Aliasing', 'JavaScript'],
+      categories: ['DSP', 'ECE', 'SOFTWARE', 'ALL'],
       github: 'https://github.com/NebulaVoltage',
     },
     {
@@ -33,9 +40,14 @@ export default function Projects() {
       description:
         'Arduino and electronics projects exploring hardware sensors, embedded microcontroller programming, signal processing, and physical systems.',
       technologies: ['Arduino', 'C/C++', 'Embedded Systems', 'Sensors', 'Hardware'],
+      categories: ['EMBEDDED', 'ECE', 'ALL'],
       github: 'https://github.com/NebulaVoltage',
     },
   ];
+
+  const filteredProjects = activeFilter === 'ALL'
+    ? PROJECTS_DATA
+    : PROJECTS_DATA.filter((p) => p.categories.includes(activeFilter));
 
   return (
     <section id="projects" className="py-28 md:py-36 bg-[#050505] border-t border-white/12">
@@ -47,19 +59,38 @@ export default function Projects() {
         </div>
 
         {/* Editorial Heading */}
-        <h2 className="text-3xl md:text-5xl font-normal uppercase tracking-tight text-[#FAFAFA] mb-16 font-[Manrope]">
-          ENGINEERING PROJECTS.
-        </h2>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+          <h2 className="text-3xl md:text-5xl font-normal uppercase tracking-tight text-[#FAFAFA] font-[Manrope]">
+            ENGINEERING PROJECTS.
+          </h2>
+        </div>
+
+        {/* Filter Categories Tabs */}
+        <div className="flex flex-wrap items-center gap-2 mb-12 border-b border-white/12 pb-6">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveFilter(cat)}
+              className={`px-4 py-1.5 rounded-full text-xs mono tracking-wider uppercase transition-all duration-300 ${
+                activeFilter === cat
+                  ? 'bg-white text-black font-bold shadow-lg'
+                  : 'bg-white/5 border border-white/12 text-white/60 hover:text-white hover:border-white/30'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
 
         {/* Editorial Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-          {PROJECTS_DATA.map((project) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 transition-all duration-300">
+          {filteredProjects.map((project) => (
             <a
               key={project.number}
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="editorial-card p-8 md:p-10 flex flex-col justify-between group cursor-pointer"
+              className="editorial-card p-8 md:p-10 flex flex-col justify-between group cursor-pointer animate-fade-up"
             >
               <div>
                 {/* Header Number & Arrow */}
@@ -99,6 +130,12 @@ export default function Projects() {
             </a>
           ))}
         </div>
+
+        {filteredProjects.length === 0 && (
+          <div className="text-center py-16 text-white/50 mono text-xs uppercase">
+            No projects found in category "{activeFilter}".
+          </div>
+        )}
 
       </div>
     </section>

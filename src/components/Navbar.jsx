@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -54,7 +55,7 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-[10] transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-[20] transition-all duration-300 ${
           scrolled ? 'bg-[#050505]/90 backdrop-blur-md border-b border-white/12 py-3.5 shadow-2xl' : 'bg-transparent py-6'
         }`}
       >
@@ -90,8 +91,9 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* TOP-RIGHT: [ LET'S CONNECT ] */}
-          <div className="hidden lg:flex items-center">
+          {/* TOP-RIGHT: Theme Toggle & [ LET'S CONNECT ] */}
+          <div className="hidden lg:flex items-center gap-4">
+            <ThemeToggle />
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, '#contact')}
@@ -101,11 +103,13 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* MOBILE NAVIGATION TRIGGER */}
-          <div className="flex lg:hidden items-center">
+          {/* MOBILE NAVIGATION TRIGGER & THEME TOGGLE */}
+          <div className="flex lg:hidden items-center gap-3">
+            <ThemeToggle />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+              aria-expanded={mobileMenuOpen}
               className="p-2 rounded border border-white/20 bg-black/60 text-white backdrop-blur-md"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

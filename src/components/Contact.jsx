@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, CheckCircle2, AlertCircle, ArrowUpRight } from 'lucide-react';
+import { Send, CheckCircle2, AlertCircle, Loader2, ArrowUpRight } from 'lucide-react';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -9,7 +9,9 @@ export default function Contact() {
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const validate = () => {
     const errs = {};
@@ -35,17 +37,27 @@ export default function Contact() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitError('');
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    setSubmitted(true);
-    setFormData({ name: '', email: '', message: '' });
-    setErrors({});
+    try {
+      setLoading(true);
+      // Simulate client submission validation delay
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      setSubmitted(true);
+      setFormData({ name: '', email: '', message: '' });
+      setErrors({});
+    } catch {
+      setSubmitError('Failed to process message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -76,6 +88,7 @@ export default function Contact() {
                   href="https://github.com/NebulaVoltage"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Visit Shreehith Sai Vodapally GitHub profile"
                   className="editorial-card p-5 flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-3">
@@ -91,6 +104,7 @@ export default function Contact() {
                   href="https://www.linkedin.com/in/shreehith-vodapally-68796b378/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Visit Shreehith Sai Vodapally LinkedIn profile"
                   className="editorial-card p-5 flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-3">
@@ -112,10 +126,10 @@ export default function Contact() {
                 <div className="py-12 text-center flex flex-col items-center justify-center">
                   <CheckCircle2 className="w-12 h-12 text-white mb-4" />
                   <h3 className="text-xl font-semibold text-[#FAFAFA] mb-2 uppercase font-[Manrope]">
-                    Message Delivered
+                    Message Validated
                   </h3>
                   <p className="text-sm text-white/60 max-w-md mb-6 font-normal">
-                    Thank you for reaching out. Your message has been transmitted cleanly.
+                    Thank you for reaching out. Your message form has been validated and submitted.
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
@@ -127,18 +141,27 @@ export default function Contact() {
               ) : (
                 <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
                   
+                  {submitError && (
+                    <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-xs text-red-400 flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>{submitError}</span>
+                    </div>
+                  )}
+
                   {/* Name Input */}
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="name" className="mono text-xs font-medium text-white/60 uppercase tracking-wider">
+                    <label htmlFor="contact-name" className="mono text-xs font-medium text-white/60 uppercase tracking-wider">
                       Name
                     </label>
                     <input
                       type="text"
-                      id="name"
+                      id="contact-name"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Your full name"
+                      required
+                      aria-required="true"
                       className={`w-full px-4 py-3.5 dark-input text-sm ${
                         errors.name ? 'border-red-500' : ''
                       }`}
@@ -153,16 +176,18 @@ export default function Contact() {
 
                   {/* Email Input */}
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="email" className="mono text-xs font-medium text-white/60 uppercase tracking-wider">
+                    <label htmlFor="contact-email" className="mono text-xs font-medium text-white/60 uppercase tracking-wider">
                       Email
                     </label>
                     <input
                       type="email"
-                      id="email"
+                      id="contact-email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="your.email@example.com"
+                      required
+                      aria-required="true"
                       className={`w-full px-4 py-3.5 dark-input text-sm ${
                         errors.email ? 'border-red-500' : ''
                       }`}
@@ -177,16 +202,18 @@ export default function Contact() {
 
                   {/* Message Input */}
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="message" className="mono text-xs font-medium text-white/60 uppercase tracking-wider">
+                    <label htmlFor="contact-message" className="mono text-xs font-medium text-white/60 uppercase tracking-wider">
                       Message
                     </label>
                     <textarea
-                      id="message"
+                      id="contact-message"
                       name="message"
                       rows={5}
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="How can we collaborate?"
+                      required
+                      aria-required="true"
                       className={`w-full px-4 py-3.5 dark-input text-sm resize-y ${
                         errors.message ? 'border-red-500' : ''
                       }`}
@@ -202,10 +229,20 @@ export default function Contact() {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    className="w-full h-[46px] rounded-full bg-white text-black font-semibold text-xs tracking-wider uppercase hover:bg-neutral-200 transition-all duration-300 flex items-center justify-center gap-2 shadow-2xl mt-2"
+                    disabled={loading}
+                    className="w-full h-[46px] rounded-full bg-white text-black font-semibold text-xs tracking-wider uppercase hover:bg-neutral-200 transition-all duration-300 flex items-center justify-center gap-2 shadow-2xl mt-2 disabled:opacity-50"
                   >
-                    <span>SEND MESSAGE</span>
-                    <Send className="w-4 h-4" />
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>VALIDATING...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>SEND MESSAGE</span>
+                        <Send className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
 
                 </form>

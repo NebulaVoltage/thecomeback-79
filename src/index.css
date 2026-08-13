@@ -12,6 +12,23 @@
   --font-main: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --ease-cinematic: cubic-bezier(.22, 1, .36, 1);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --btn-bg: #FFFFFF;
+  --btn-text: #050505;
+}
+
+/* Light Theme Overrides */
+html.light {
+  --bg-primary: #f6f6f8;
+  --bg-surface: #ffffff;
+  --text-primary: #0a0a0b;
+  --text-secondary: #52525b;
+  --text-subtle: #3f3f46;
+  --border-subtle: rgba(0, 0, 0, 0.12);
+  --border-hover: rgba(0, 0, 0, 0.28);
+  --input-bg: rgba(0, 0, 0, 0.04);
+  --btn-bg: #050505;
+  --btn-text: #FFFFFF;
 }
 
 *, *::before, *::after {
@@ -36,12 +53,13 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   width: 100%;
+  transition: background-color 0.35s var(--ease-cinematic), color 0.35s var(--ease-cinematic);
 }
 
 /* Selection */
 ::selection {
-  background-color: #FAFAFA;
-  color: #050505;
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
 }
 
 /* Typography Defaults */
@@ -74,23 +92,23 @@ a {
   text-decoration: none;
 }
 
-/* Dark Premium Form Controls */
+/* Premium Form Controls */
 .dark-input {
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #FAFAFA;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
   border-radius: 12px;
   transition: border-color 0.3s var(--ease-cinematic), background-color 0.3s var(--ease-cinematic);
 }
 
 .dark-input:focus {
   outline: none;
-  border-color: rgba(255, 255, 255, 0.5);
-  background-color: rgba(255, 255, 255, 0.07);
+  border-color: var(--border-hover);
+  background-color: var(--input-bg);
 }
 
 .dark-input::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--text-secondary);
 }
 
 /* Clean Editorial Card */
@@ -103,7 +121,6 @@ a {
 
 .editorial-card:hover {
   border-color: var(--border-hover);
-  background-color: #0f0f12;
 }
 
 /* Custom Scrollbar */
