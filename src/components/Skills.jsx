@@ -1,53 +1,111 @@
 import React from 'react';
-import { SKILLS_CATEGORIES } from '../data/skillsData';
 
 export default function Skills() {
+  const SKILL_GROUPS = [
+    {
+      category: 'SOFTWARE',
+      skills: [
+        'Python',
+        'Java',
+        'JavaScript',
+        'React',
+        'HTML',
+        'CSS',
+        'Tailwind CSS',
+        'Node.js',
+      ],
+    },
+    {
+      category: 'DATA STRUCTURES & ALGORITHMS',
+      skills: [
+        'BST',
+        'AVL Trees',
+        'B-Trees',
+        'B+ Trees',
+        'Segment Trees',
+        'Fenwick Trees',
+        'Graphs',
+        'BFS',
+        'DFS',
+        'Dijkstra',
+        'A*',
+      ],
+    },
+    {
+      category: 'AI / ML',
+      skills: [
+        'Machine Learning',
+        'Gradient Descent',
+        'Classification',
+        'Probability',
+        'Search Algorithms',
+        'NLP fundamentals',
+      ],
+    },
+    {
+      category: 'ELECTRONICS / EMBEDDED',
+      skills: [
+        'Arduino',
+        'Embedded Systems',
+        'Analog Electronics',
+        'Digital Signal Processing',
+        'Communication Systems',
+        'Sampling',
+        'Modulation',
+        'Signal Analysis',
+        'Circuit Simulation',
+      ],
+    },
+    {
+      category: 'TOOLS',
+      skills: [
+        'Git',
+        'GitHub',
+        'Vercel',
+        'Netlify',
+        'IntelliJ IDEA',
+        'Eclipse',
+        'VS Code',
+      ],
+    },
+  ];
+
   return (
-    <section id="skills" className="py-24 border-t border-[var(--border-color)] bg-[var(--bg-primary)]">
+    <section id="skills" className="py-24 md:py-32 bg-[#050505] border-t border-white/12">
       <div className="container-custom">
         
-        {/* Section Header */}
-        <div className="mb-16">
-          <div className="section-tag">02 / SKILLS</div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-[var(--text-primary)]">
-            THE TOOLSET.
-          </h2>
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] mt-3 max-w-2xl">
-            A comprehensive overview of core technologies across software engineering, data structures, machine learning, embedded systems, and electronics.
-          </p>
+        {/* Eyebrow */}
+        <div className="section-tag">
+          02 // TECHNICAL SKILLS
         </div>
 
-        {/* Typographic Category Layout */}
-        <div className="space-y-12">
-          {SKILLS_CATEGORIES.map((cat) => (
-            <div
-              key={cat.number}
-              className="p-8 rounded-2xl glass-card relative group transition-all duration-300"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                
-                {/* Category Title & Number */}
-                <div className="lg:col-span-4 flex items-baseline gap-4">
-                  <span className="mono text-sm font-bold text-[var(--text-secondary)] tracking-widest">
-                    CATEGORY {cat.number}
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)] uppercase">
-                    {cat.title}
+        {/* Heading */}
+        <h2 className="text-3xl md:text-5xl font-bold uppercase tracking-tight text-[#FAFAFA] mb-12">
+          ENGINEERING CAPABILITIES.
+        </h2>
+
+        {/* Categories Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {SKILL_GROUPS.map((group, index) => (
+            <div key={group.category} className="clean-card p-7 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-4 border-b border-white/12 pb-3">
+                  <h3 className="text-sm font-bold tracking-wider text-[#FAFAFA] uppercase">
+                    {group.category}
                   </h3>
+                  <span className="mono text-xs text-white/40">0{index + 1}</span>
                 </div>
 
-                {/* Skills Badges Pill Grid */}
-                <div className="lg:col-span-8 flex flex-wrap gap-2.5">
-                  {cat.skills.map((skill) => (
-                    <div
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {group.skills.map((skill) => (
+                    <span
                       key={skill}
-                      className="px-4 py-2 rounded-lg bg-[var(--badge-bg)] border border-[var(--border-color)] text-[var(--text-primary)] text-xs font-medium tracking-wide mono hover:border-[var(--text-primary)] hover:bg-[var(--bg-card-hover)] transition-all duration-200"
+                      className="px-3 py-1.5 rounded-md bg-white/5 border border-white/12 text-xs font-medium text-[#FAFAFA] tracking-wide"
                     >
                       {skill}
-                    </div>
+                    </span>
                   ))}
                 </div>
-
               </div>
             </div>
           ))}

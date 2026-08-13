@@ -1,91 +1,62 @@
 import React from 'react';
-import { GraduationCap, BookOpen, Calendar, MapPin } from 'lucide-react';
+import { GraduationCap } from 'lucide-react';
 
 export default function Education() {
-  // Configurable Education Data Structure
-  const EDUCATION_DATA = {
-    degree: "BACHELOR OF TECHNOLOGY",
-    department: "ELECTRONICS & COMMUNICATION ENGINEERING",
-    departmentAbbr: "ECE",
-    institution: "[ INSTITUTION NAME ]", // Editable placeholder
-    location: "India",
-    startYear: "2024",
-    expectedGraduation: "2028", // Editable placeholder
-    coursework: [
-      "Digital Signal Processing (DSP)",
-      "Signals & Systems",
-      "Microcontrollers & Embedded Systems",
-      "Analog & Digital Electronics",
-      "Data Structures & Algorithms",
-      "Object-Oriented Programming (Java/Python)",
-      "Communication Systems & Modulation",
-      "Computer Networks"
-    ]
-  };
+  const COURSEWORK = [
+    'Digital Signal Processing (DSP)',
+    'Signals & Systems',
+    'Microcontrollers & Embedded Systems',
+    'Analog & Digital Electronics',
+    'Data Structures & Algorithms',
+    'Object-Oriented Programming',
+    'Communication Systems & Modulation',
+    'Computer Networks',
+  ];
 
   return (
-    <section id="education" className="py-24 border-t border-[var(--border-color)] bg-[var(--bg-secondary)]">
+    <section id="education" className="py-24 md:py-32 bg-[#050505] border-t border-white/12">
       <div className="container-custom">
         
-        {/* Section Header */}
-        <div className="mb-16">
-          <div className="section-tag">EDUCATION</div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-[var(--text-primary)]">
-            ACADEMIC FOUNDATION.
-          </h2>
+        {/* Eyebrow */}
+        <div className="section-tag">
+          04 // EDUCATION
         </div>
 
-        {/* Education Card */}
-        <div className="glass-card p-8 sm:p-12 rounded-3xl relative overflow-hidden">
-          
-          {/* Background Big Typography Accent */}
-          <div className="absolute right-6 bottom-4 text-8xl sm:text-9xl font-black text-[var(--text-primary)] opacity-[0.03] pointer-events-none select-none">
-            {EDUCATION_DATA.departmentAbbr}
-          </div>
+        {/* Heading */}
+        <h2 className="text-3xl md:text-5xl font-bold uppercase tracking-tight text-[#FAFAFA] mb-12">
+          ACADEMIC FOUNDATION.
+        </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
+        {/* Education Card */}
+        <div className="clean-card p-8 md:p-12 relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Degree & Department Header */}
+            {/* Degree Details */}
             <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--badge-bg)] border border-[var(--border-color)] text-xs mono text-amber-400 font-bold uppercase">
-                <GraduationCap className="w-4 h-4" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-white/5 border border-white/12 text-xs mono text-neutral-300 uppercase">
+                <GraduationCap className="w-4 h-4 text-white" />
                 <span>UNDERGRADUATE DEGREE</span>
               </div>
 
-              <h3 className="text-2xl sm:text-4xl font-black tracking-tight text-[var(--text-primary)] uppercase leading-tight">
-                {EDUCATION_DATA.department}
+              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-[#FAFAFA] uppercase leading-tight">
+                ELECTRONICS & COMMUNICATION ENGINEERING
               </h3>
 
-              <p className="mono text-sm text-[var(--text-secondary)] font-semibold uppercase tracking-wider">
-                {EDUCATION_DATA.degree}
+              <p className="mono text-sm text-[#a7a6a6] uppercase tracking-wider">
+                Bachelor of Technology (B.Tech)
               </p>
-
-              <div className="flex flex-wrap items-center gap-6 pt-4 text-xs sm:text-sm text-[var(--text-secondary)] border-t border-[var(--border-color)]">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-[var(--text-primary)]" />
-                  <span>{EDUCATION_DATA.institution}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[var(--text-primary)]" />
-                  <span>{EDUCATION_DATA.startYear} - {EDUCATION_DATA.expectedGraduation}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[var(--text-primary)]" />
-                  <span>{EDUCATION_DATA.location}</span>
-                </div>
-              </div>
             </div>
 
-            {/* Coursework Tags */}
+            {/* Relevant Coursework */}
             <div className="lg:col-span-5 space-y-4">
-              <span className="mono text-xs font-bold text-[var(--text-secondary)] tracking-widest uppercase block">
+              <span className="mono text-xs font-semibold text-white/50 tracking-widest uppercase block">
                 // RELEVANT COURSEWORK
               </span>
               <div className="flex flex-wrap gap-2">
-                {EDUCATION_DATA.coursework.map((course) => (
+                {COURSEWORK.map((course) => (
                   <span
                     key={course}
-                    className="px-3 py-1.5 rounded-lg bg-[var(--badge-bg)] border border-[var(--border-color)] text-xs mono text-[var(--text-primary)] hover:border-[var(--text-primary)] transition-colors"
+                    className="px-3 py-1.5 rounded bg-white/5 border border-white/12 text-xs font-medium text-[#FAFAFA]"
                   >
                     {course}
                   </span>
@@ -94,7 +65,6 @@ export default function Education() {
             </div>
 
           </div>
-
         </div>
 
       </div>

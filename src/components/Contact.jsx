@@ -1,267 +1,219 @@
 import React, { useState } from 'react';
-import { Send, CheckCircle2, AlertCircle, Download, Mail, ArrowUpRight } from 'lucide-react';
-import { GithubIcon, LinkedinIcon } from './SocialIcons';
+import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
   });
+
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState('idle'); // 'idle' | 'submitting' | 'success' | 'error'
+  const [submitted, setSubmitted] = useState(false);
 
   const validate = () => {
-    const newErrors = {};
+    const errs = {};
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      errs.name = 'Name is required.';
     }
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      errs.email = 'Email is required.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      errs.email = 'Please enter a valid email address.';
     }
     if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
+      errs.message = 'Message cannot be empty.';
     }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return errs;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
-
-    setStatus('submitting');
-
-    // Configurable endpoint support via VITE_CONTACT_FORM_ENDPOINT
-    const endpoint = import.meta.env.VITE_CONTACT_FORM_ENDPOINT;
-
-    try {
-      if (endpoint) {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        });
-        if (!response.ok) throw new Error('Submission failed');
-      } else {
-        // Deployment-ready simulation for static preview
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      }
-      setStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-      setErrors({});
-    } catch (err) {
-      console.error("Contact Form error:", err);
-      setStatus('error');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: '' }));
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setSubmitted(true);
+    setFormData({ name: '', email: '', message: '' });
+    setErrors({});
   };
 
   return (
-    <section id="contact" className="py-24 border-t border-[var(--border-color)] bg-[var(--bg-primary)]">
+    <section id="contact" className="py-24 md:py-32 bg-[#050505] border-t border-white/12">
       <div className="container-custom">
         
-        {/* Section Header */}
-        <div className="mb-16">
-          <div className="section-tag">05 / CONTACT</div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-[var(--text-primary)] mb-4">
-            LET'S BUILD SOMETHING INTERESTING.
-          </h2>
-          <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-2xl">
-            Open to interesting engineering problems, collaborative projects, and opportunities to build at the intersection of hardware and software.
-          </p>
+        {/* Eyebrow */}
+        <div className="section-tag">
+          07 // CONTACT
         </div>
+
+        {/* Heading */}
+        <h2 className="text-3xl md:text-5xl font-bold uppercase tracking-tight text-[#FAFAFA] mb-12">
+          LET'S BUILD SOMETHING INTERESTING.
+        </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          {/* Left Column: Direct Links & Action Cards */}
-          <div className="lg:col-span-5 space-y-6">
-            
-            {/* Resume Download Card */}
-            <div className="glass-card p-8 rounded-2xl space-y-4">
-              <span className="mono text-xs text-[var(--text-secondary)] uppercase tracking-widest block">
-                // RESUME & CREDENTIALS
-              </span>
-              <h3 className="text-xl font-bold text-[var(--text-primary)] uppercase">
-                ENGINEERING PROFILE
-              </h3>
-              <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-                Download verified resume detailing technical projects, ECE coursework, and software skills.
+          {/* Left Info Column */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-8">
+            <div>
+              <p className="text-base md:text-lg text-[#a7a6a6] leading-relaxed mb-8">
+                I'm open to discussions on hardware-software engineering, embedded systems development, algorithms, and technical collaborations.
               </p>
-              <a
-                href="/resume.pdf"
-                download="Shreehith_Vodapally_Resume.pdf"
-                data-cursor="OPEN"
-                className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-[var(--text-primary)] text-[var(--bg-primary)] text-xs font-extrabold tracking-widest uppercase hover:opacity-90 transition-all shadow-lg cursor-pointer"
-              >
-                <Download className="w-4 h-4" />
-                <span>DOWNLOAD RESUME</span>
-              </a>
-            </div>
 
-            {/* Social Direct Links */}
-            <div className="glass-card p-8 rounded-2xl space-y-6">
-              <span className="mono text-xs text-[var(--text-secondary)] uppercase tracking-widest block">
-                // DIRECT CONNECT
-              </span>
-
-              {/* GitHub */}
-              <a
-                href="https://github.com/NebulaVoltage"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-cursor="OPEN"
-                className="flex items-center justify-between p-4 rounded-xl border border-[var(--border-color)] hover:border-[var(--text-primary)] bg-[var(--badge-bg)] text-[var(--text-primary)] group transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <GithubIcon className="w-5 h-5" />
-                  <div>
-                    <div className="font-bold text-sm">GitHub</div>
-                    <div className="mono text-xs text-[var(--text-secondary)]">@NebulaVoltage</div>
+              <div className="flex flex-col gap-4">
+                <a
+                  href="https://github.com/NebulaVoltage"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="clean-card p-4 flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-3">
+                    <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
+                      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    <span className="font-semibold text-sm text-[#FAFAFA]">GitHub</span>
                   </div>
-                </div>
-                <ArrowUpRight className="w-4 h-4 text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-              </a>
+                  <span className="mono text-xs text-[#a7a6a6] group-hover:text-white transition-colors">
+                    github.com/NebulaVoltage
+                  </span>
+                </a>
 
-              {/* LinkedIn */}
-              <a
-                href="https://www.linkedin.com/in/shreehith-vodapally-68796b378/"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-cursor="OPEN"
-                className="flex items-center justify-between p-4 rounded-xl border border-[var(--border-color)] hover:border-[var(--text-primary)] bg-[var(--badge-bg)] text-[var(--text-primary)] group transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <LinkedinIcon className="w-5 h-5 text-blue-400" />
-                  <div>
-                    <div className="font-bold text-sm">LinkedIn</div>
-                    <div className="mono text-xs text-[var(--text-secondary)]">Shreehith Vodapally</div>
+                <a
+                  href="https://www.linkedin.com/in/shreehith-vodapally-68796b378/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="clean-card p-4 flex items-center justify-between group"
+                >
+                  <div className="flex items-center gap-3">
+                    <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                    <span className="font-semibold text-sm text-[#FAFAFA]">LinkedIn</span>
                   </div>
-                </div>
-                <ArrowUpRight className="w-4 h-4 text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-              </a>
+                  <span className="mono text-xs text-[#a7a6a6] group-hover:text-white transition-colors">
+                    linkedin.com/in/shreehith-vodapally
+                  </span>
+                </a>
+              </div>
             </div>
-
           </div>
 
-          {/* Right Column: Working Contact Form UI */}
+          {/* Right Form Column */}
           <div className="lg:col-span-7">
-            <div className="glass-card p-8 sm:p-10 rounded-2xl relative">
-              
-              <h3 className="text-xl font-bold text-[var(--text-primary)] uppercase mb-6">
-                SEND A DIRECT MESSAGE
-              </h3>
-
-              {status === 'success' ? (
-                <div className="p-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center space-y-4">
-                  <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto" />
-                  <h4 className="font-bold text-lg text-emerald-300">MESSAGE TRANSMITTED</h4>
-                  <p className="text-xs text-neutral-300">
-                    Thank you for reaching out. Your message has been recorded successfully.
+            <div className="clean-card p-8 md:p-10">
+              {submitted ? (
+                <div className="py-12 text-center flex flex-col items-center justify-center">
+                  <CheckCircle2 className="w-12 h-12 text-white mb-4" />
+                  <h3 className="text-xl font-bold text-[#FAFAFA] mb-2 uppercase">
+                    Message Delivered
+                  </h3>
+                  <p className="text-sm text-[#a7a6a6] max-w-md mb-6">
+                    Thank you for reaching out. Your message has been received cleanly.
                   </p>
                   <button
-                    onClick={() => setStatus('idle')}
-                    className="px-6 py-2 rounded-full border border-emerald-400/40 text-emerald-300 text-xs font-bold uppercase mono hover:bg-emerald-500/20 transition-all cursor-pointer"
+                    onClick={() => setSubmitted(false)}
+                    className="px-6 py-2.5 rounded-full bg-white/10 border border-white/20 text-xs font-bold uppercase tracking-wider text-white hover:bg-white/20 transition-all"
                   >
-                    SEND ANOTHER MESSAGE
+                    Send Another Message
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+                <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
                   
                   {/* Name Input */}
-                  <div>
-                    <label htmlFor="name-input" className="mono text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider block mb-2">
-                      NAME <span className="text-red-400">*</span>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="name" className="mono text-xs font-semibold text-white/70 uppercase">
+                      Name
                     </label>
                     <input
-                      id="name-input"
                       type="text"
+                      id="name"
+                      name="name"
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Your Full Name"
-                      className={`w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border ${
-                        errors.name ? 'border-red-500' : 'border-[var(--border-color)]'
-                      } text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:border-[var(--text-primary)] focus:outline-none transition-colors text-sm`}
+                      onChange={handleChange}
+                      placeholder="Your full name"
+                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${
+                        errors.name ? 'border-red-500' : 'border-white/12 focus:border-white'
+                      } text-sm text-[#FAFAFA] placeholder:text-white/30 focus:outline-none transition-colors`}
                     />
                     {errors.name && (
-                      <p className="text-xs text-red-400 mt-1 mono flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.name}
-                      </p>
+                      <span className="flex items-center gap-1 text-xs text-red-400 mt-1">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        {errors.name}
+                      </span>
                     )}
                   </div>
 
                   {/* Email Input */}
-                  <div>
-                    <label htmlFor="email-input" className="mono text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider block mb-2">
-                      EMAIL <span className="text-red-400">*</span>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="email" className="mono text-xs font-semibold text-white/70 uppercase">
+                      Email
                     </label>
                     <input
-                      id="email-input"
                       type="email"
+                      id="email"
+                      name="email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="name@example.com"
-                      className={`w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border ${
-                        errors.email ? 'border-red-500' : 'border-[var(--border-color)]'
-                      } text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:border-[var(--text-primary)] focus:outline-none transition-colors text-sm`}
+                      onChange={handleChange}
+                      placeholder="your.email@example.com"
+                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${
+                        errors.email ? 'border-red-500' : 'border-white/12 focus:border-white'
+                      } text-sm text-[#FAFAFA] placeholder:text-white/30 focus:outline-none transition-colors`}
                     />
                     {errors.email && (
-                      <p className="text-xs text-red-400 mt-1 mono flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.email}
-                      </p>
+                      <span className="flex items-center gap-1 text-xs text-red-400 mt-1">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        {errors.email}
+                      </span>
                     )}
                   </div>
 
                   {/* Message Input */}
-                  <div>
-                    <label htmlFor="message-input" className="mono text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider block mb-2">
-                      MESSAGE <span className="text-red-400">*</span>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="message" className="mono text-xs font-semibold text-white/70 uppercase">
+                      Message
                     </label>
                     <textarea
-                      id="message-input"
+                      id="message"
+                      name="message"
                       rows={5}
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Describe your engineering inquiry or project idea..."
-                      className={`w-full px-4 py-3 rounded-xl bg-[var(--bg-secondary)] border ${
-                        errors.message ? 'border-red-500' : 'border-[var(--border-color)]'
-                      } text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:border-[var(--text-primary)] focus:outline-none transition-colors text-sm resize-none`}
+                      onChange={handleChange}
+                      placeholder="How can we collaborate?"
+                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${
+                        errors.message ? 'border-red-500' : 'border-white/12 focus:border-white'
+                      } text-sm text-[#FAFAFA] placeholder:text-white/30 focus:outline-none transition-colors resize-y`}
                     />
                     {errors.message && (
-                      <p className="text-xs text-red-400 mt-1 mono flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3" /> {errors.message}
-                      </p>
+                      <span className="flex items-center gap-1 text-xs text-red-400 mt-1">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        {errors.message}
+                      </span>
                     )}
                   </div>
-
-                  {status === 'error' && (
-                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-300 mono flex items-center gap-2">
-                      <AlertCircle className="w-4 h-4 shrink-0" />
-                      <span>An error occurred while sending. Please try again.</span>
-                    </div>
-                  )}
 
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    disabled={status === 'submitting'}
-                    className="w-full py-4 rounded-full bg-[var(--accent-cta-bg)] text-[var(--accent-cta-text)] font-extrabold text-xs tracking-widest uppercase hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 cursor-pointer"
+                    className="w-full py-4 rounded-full bg-white text-black font-extrabold text-xs tracking-wider uppercase hover:bg-neutral-200 transition-all duration-300 flex items-center justify-center gap-2 shadow-2xl mt-2"
                   >
-                    {status === 'submitting' ? (
-                      <span>TRANSMITTING MESSAGE...</span>
-                    ) : (
-                      <>
-                        <span>SEND MESSAGE</span>
-                        <Send className="w-4 h-4" />
-                      </>
-                    )}
+                    <span>SEND MESSAGE</span>
+                    <Send className="w-4 h-4" />
                   </button>
 
                 </form>
               )}
-
             </div>
           </div>
 
