@@ -1,23 +1,14 @@
 import React from 'react';
 
 export default function Skills() {
-  const SKILL_GROUPS = [
+  const SKILL_CATEGORIES = [
     {
       category: 'SOFTWARE',
-      skills: [
-        'Python',
-        'Java',
-        'JavaScript',
-        'React',
-        'HTML',
-        'CSS',
-        'Tailwind CSS',
-        'Node.js',
-      ],
+      items: ['Python', 'Java', 'JavaScript', 'React', 'HTML', 'CSS', 'Tailwind CSS', 'Node.js'],
     },
     {
       category: 'DATA STRUCTURES & ALGORITHMS',
-      skills: [
+      items: [
         'BST',
         'AVL Trees',
         'B-Trees',
@@ -33,7 +24,7 @@ export default function Skills() {
     },
     {
       category: 'AI / ML',
-      skills: [
+      items: [
         'Machine Learning',
         'Gradient Descent',
         'Classification',
@@ -44,7 +35,7 @@ export default function Skills() {
     },
     {
       category: 'ELECTRONICS / EMBEDDED',
-      skills: [
+      items: [
         'Arduino',
         'Embedded Systems',
         'Analog Electronics',
@@ -58,54 +49,49 @@ export default function Skills() {
     },
     {
       category: 'TOOLS',
-      skills: [
-        'Git',
-        'GitHub',
-        'Vercel',
-        'Netlify',
-        'IntelliJ IDEA',
-        'Eclipse',
-        'VS Code',
-      ],
+      items: ['Git', 'GitHub', 'Vercel', 'Netlify', 'IntelliJ IDEA', 'Eclipse', 'VS Code'],
     },
   ];
 
   return (
-    <section id="skills" className="py-24 md:py-32 bg-[#050505] border-t border-white/12">
+    <section id="skills" className="py-28 md:py-36 bg-[#050505] border-t border-white/12">
       <div className="container-custom">
         
-        {/* Eyebrow */}
+        {/* Section Eyebrow */}
         <div className="section-tag">
           02 // TECHNICAL SKILLS
         </div>
 
-        {/* Heading */}
-        <h2 className="text-3xl md:text-5xl font-bold uppercase tracking-tight text-[#FAFAFA] mb-12">
+        {/* Editorial Heading */}
+        <h2 className="text-3xl md:text-5xl font-normal uppercase tracking-tight text-[#FAFAFA] mb-16 font-[Manrope]">
           ENGINEERING CAPABILITIES.
         </h2>
 
-        {/* Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SKILL_GROUPS.map((group, index) => (
-            <div key={group.category} className="clean-card p-7 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-4 border-b border-white/12 pb-3">
-                  <h3 className="text-sm font-bold tracking-wider text-[#FAFAFA] uppercase">
-                    {group.category}
-                  </h3>
-                  <span className="mono text-xs text-white/40">0{index + 1}</span>
-                </div>
+        {/* Editorial Technical List with Thin Separators */}
+        <div className="flex flex-col border-t border-white/12">
+          {SKILL_CATEGORIES.map((cat, index) => (
+            <div
+              key={cat.category}
+              className="py-8 md:py-10 border-b border-white/12 flex flex-col lg:flex-row lg:items-start justify-between gap-6"
+            >
+              {/* Category Label */}
+              <div className="lg:w-1/3 flex items-center gap-4">
+                <span className="mono text-xs text-white/40">0{index + 1}</span>
+                <h3 className="text-sm font-semibold tracking-wider text-[#FAFAFA] uppercase font-[Manrope]">
+                  {cat.category}
+                </h3>
+              </div>
 
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {group.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1.5 rounded-md bg-white/5 border border-white/12 text-xs font-medium text-[#FAFAFA] tracking-wide"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
+              {/* Items List */}
+              <div className="lg:w-2/3 flex flex-wrap gap-x-6 gap-y-3">
+                {cat.items.map((item) => (
+                  <span
+                    key={item}
+                    className="text-sm text-white/70 font-normal hover:text-white transition-colors"
+                  >
+                    {item}
+                  </span>
+                ))}
               </div>
             </div>
           ))}

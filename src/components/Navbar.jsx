@@ -10,6 +10,7 @@ export default function Navbar() {
     { label: 'Skills', href: '#skills' },
     { label: 'Projects', href: '#projects' },
     { label: 'Education', href: '#education' },
+    { label: 'Certifications', href: '#certifications' },
     { label: 'Contact', href: '#contact' },
   ];
 
@@ -53,20 +54,20 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-[#050505]/85 backdrop-blur-md border-b border-white/12 py-3 shadow-xl' : 'bg-transparent py-6'
+        className={`fixed top-0 left-0 right-0 z-[10] transition-all duration-300 ${
+          scrolled ? 'bg-[#050505]/90 backdrop-blur-md border-b border-white/12 py-3.5 shadow-2xl' : 'bg-transparent py-6'
         }`}
       >
         <div className="w-full px-[5vw] flex items-center justify-between mx-auto max-w-[1800px]">
           
-          {/* TOP-LEFT: Small geometric S/bolt logo */}
+          {/* TOP-LEFT: Small Geometric S/bolt logo */}
           <a
             href="#"
-            className="flex items-center gap-3 group text-decoration-none"
+            className="flex items-center gap-3 group"
             aria-label="Shreehith Sai Vodapally"
           >
-            <div className="w-8 h-8 rounded border border-white/20 bg-black/50 group-hover:border-white flex items-center justify-center transition-all duration-300 backdrop-blur-md">
-              <svg className="w-4 h-4 text-white" viewBox="0 0 100 100" fill="none">
+            <div className="w-7 h-7 rounded border border-white/20 bg-black/60 group-hover:border-white flex items-center justify-center transition-all duration-300 backdrop-blur-md">
+              <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 100 100" fill="none">
                 <path d="M55 12L22 54H48L42 88L78 44H50L55 12Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
               </svg>
             </div>
@@ -75,37 +76,37 @@ export default function Navbar() {
             </span>
           </a>
 
-          {/* TOP-CENTER: Navigation */}
-          <nav className="hidden lg:flex items-center gap-7 bg-black/40 px-6 py-2 rounded-full border border-white/12 backdrop-blur-md">
+          {/* TOP-CENTER: Minimal Editorial Navigation */}
+          <nav className="hidden lg:flex items-center gap-8 bg-black/40 px-7 py-2 rounded-full border border-white/12 backdrop-blur-md">
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="text-xs font-medium tracking-wide text-neutral-300 hover:text-white transition-colors duration-200"
+                className="text-[14px] font-normal tracking-wide text-neutral-300 hover:text-white transition-colors duration-200"
               >
                 {item.label}
               </a>
             ))}
           </nav>
 
-          {/* TOP-RIGHT: LET'S CONNECT */}
+          {/* TOP-RIGHT: [ LET'S CONNECT ] */}
           <div className="hidden lg:flex items-center">
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, '#contact')}
-              className="inline-flex items-center justify-center px-5 h-[38px] rounded-full bg-white text-black font-extrabold text-xs tracking-wider uppercase hover:bg-neutral-200 transition-all duration-300"
+              className="inline-flex items-center justify-center px-5 h-[40px] rounded-full bg-white text-black font-semibold text-xs tracking-wider uppercase hover:bg-neutral-200 transition-all duration-300"
             >
               LET'S CONNECT
             </a>
           </div>
 
-          {/* MOBILE MENU BUTTON */}
+          {/* MOBILE NAVIGATION TRIGGER */}
           <div className="flex lg:hidden items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
-              className="p-2 rounded-lg border border-white/20 bg-black/50 text-white backdrop-blur-md"
+              className="p-2 rounded border border-white/20 bg-black/60 text-white backdrop-blur-md"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -126,7 +127,7 @@ export default function Navbar() {
                 key={item.label}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="text-2xl font-bold tracking-tight text-white hover:text-neutral-300 transition-colors"
+                className="text-2xl font-normal tracking-tight text-white hover:text-neutral-300 transition-colors"
               >
                 {item.label}
               </a>
@@ -137,7 +138,7 @@ export default function Navbar() {
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, '#contact')}
-              className="w-full py-3.5 rounded-full bg-white text-black font-bold text-center text-xs tracking-wider uppercase"
+              className="w-full py-3.5 rounded-full bg-white text-black font-semibold text-center text-xs tracking-wider uppercase"
             >
               LET'S CONNECT
             </a>
